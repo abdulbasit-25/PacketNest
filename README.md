@@ -1,131 +1,179 @@
-# PacketNest — Documentation
+<div align="center">
 
-> A browser-based interactive network simulator inspired by Cisco Packet Tracer — 100% client-side, zero backend.
+<img src="./src/assets/image.png" alt="PacketNest — topology canvas" width="100%" />
 
-![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-blue?logo=typescript&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-Build-646CFF?logo=vite&logoColor=white)
-![Tailwind](https://img.shields.io/badge/TailwindCSS-38B2AC?logo=tailwind-css&logoColor=white)
-![License](https://img.shields.io/badge/localStorage-only-orange)
+<br/><br/>
 
-## Overview
+# `PacketNest`
 
-PacketNest is a browser-based interactive network simulator inspired by Cisco Packet Tracer. It runs entirely client-side with no backend — all data persists in **localStorage**.
+### <span style="color:#3DDC97">▍</span> NETWORK SIMULATION — SIGNAL BLUEPRINT
 
-## Tech Stack
+A lightweight, browser-based network simulator inspired by Cisco Packet Tracer — built so students can design topologies, configure devices via CLI, and test packet communication without any physical hardware.
 
-- **React 18** + **TypeScript** — UI framework
-- **Vite** — build tool
-- **Tailwind CSS** — styling
-- **shadcn/ui** — component library (Radix UI primitives)
-- **Framer Motion** — packet animations
-- **uuid** — unique device/interface IDs
-- **LocalStorage** — persistence (no database)
+<br/>
 
-## Design & Visual Effects
+[![Live Demo](https://img.shields.io/badge/●_LIVE_DEMO-packetnest.vercel.app-3DDC97?style=for-the-badge&labelColor=0B0E13)](https://packetnest.vercel.app/)
 
-PacketNest's interface is built to feel like a real network-engineering tool, not a form-heavy dashboard — dark canvas, high-contrast device iconography, and motion that communicates _what the network is doing_ rather than decorating the UI.
+<br/>
 
-### Visual Language
+![React](https://img.shields.io/badge/REACT.JS-0B0E13?style=flat-square&logo=react&logoColor=5B8CFF&labelColor=0B0E13)
+![Tailwind](https://img.shields.io/badge/TAILWIND_CSS-0B0E13?style=flat-square&logo=tailwind-css&logoColor=4FD3F0&labelColor=0B0E13)
+![Python](https://img.shields.io/badge/PYTHON-0B0E13?style=flat-square&logo=python&logoColor=F5B942&labelColor=0B0E13)
+![Node.js](https://img.shields.io/badge/NODE.JS-0B0E13?style=flat-square&logo=node.js&logoColor=3DDC97&labelColor=0B0E13)
+![JSON](https://img.shields.io/badge/JSON_STORAGE-0B0E13?style=flat-square&logo=json&logoColor=B98BFF&labelColor=0B0E13)
 
-- **Dark, blueprint-style canvas** — a deep neutral background with a faint dotted/grid pattern, evoking a schematic or blueprint workspace so cables and devices pop visually.
-- **Device iconography** — Router, Switch, PC, and Server each get a distinct silhouette and accent color (e.g. routers in blue, switches in violet, servers in amber) so topology shape is readable at a glance without reading labels.
-- **Status-driven color coding**:
-  - 🟢 Green — interface up / ping success
-  - 🔴 Red — interface down / ping failure / unreachable
-  - 🟡 Amber — misconfigured (missing IP, mismatched subnet)
-  - ⚪ Gray — unselected / idle device
-- **Glassmorphism panels** — the Config Panel and CLI panel use a translucent, blurred-background surface (`backdrop-blur`) that floats above the canvas rather than boxing it in, keeping the topology visible underneath.
-- **Selection glow** — the active device gets a soft outer-glow ring (box-shadow, not a hard border) to indicate selection without disrupting the layout.
+</div>
 
-### Motion & Animation (Framer Motion)
+<br/>
 
-- **Packet travel animation** — when a `ping` is issued, an animated dot travels along the connection path in real time, following the exact BFS-computed route hop by hop.
-  - Successful ping → dot animates in **green**, with a small pulse/scale-up burst on arrival at the destination.
-  - Failed ping → dot animates in **red** and fades out mid-path at the point of failure (e.g. stops at the last reachable hop rather than completing the route).
-- **Cable draw-in** — new connections animate as a line drawing from source to target device (stroke-dashoffset transition) instead of snapping in instantly.
-- **Device drop/spawn** — dragging a device from the palette onto the canvas triggers a small spring-scale entrance (springs in from 0.8 → 1 scale) rather than appearing abruptly.
-- **Panel transitions** — Config Panel and CLI panel slide/fade in and out (`AnimatePresence`) rather than toggling visibility instantly.
-- **Hover micro-interactions** — device nodes lift slightly (translateY + shadow increase) on hover to signal interactivity.
-- **Drag feedback** — while dragging a device, connected cables re-render live so the topology never looks "broken" mid-drag.
+```
+┌──────────────────────────────────────────────────────────────┐
+│  root@packetnest:~$ status                                     │
+│  > canvas ......... ONLINE                                     │
+│  > cli-engine ...... READY                                     │
+│  > simulation ...... ACTIVE                                    │
+└──────────────────────────────────────────────────────────────┘
+```
 
-### Layout
+## ▍ Overview
 
-- **Three-zone workspace**: device palette (left) → canvas (center, pan/zoom) → config panel (right), with a collapsible CLI panel docked at the bottom — mirroring the layout convention of professional network simulators.
-- **Zoom/pan indicators** — a small on-canvas readout shows current zoom level; scroll-to-zoom is centered on the cursor position, not the canvas origin.
+**PacketNest** is a lightweight, browser-based network simulator inspired by Cisco Packet Tracer — built so students can design topologies, configure devices via CLI, and test packet communication without any physical hardware.
 
-## How to Use
+<br/>
 
-### Adding Devices
+## ▍ Why PacketNest?
 
-Drag **Router**, **Switch**, **PC**, or **Server** from the left sidebar onto the canvas.
+> Physical networking hardware is expensive and often unavailable in academic settings. Most existing simulators either demand powerful machines or overwhelm newcomers with complexity.
+>
+> **PacketNest strips that away** — a clean, fast, visual workspace to actually learn networking by doing it.
 
-### Connecting Devices
+---
 
-1. Click **a device** to select it
-2. In the **Config Panel** (right side), choose an interface and click **Connect**
-3. Click a **second device** to complete the connection — a cable line appears
+## ▍ Core Features
 
-### Configuring Devices
+<table>
+<tr>
+<td width="50%" valign="top">
 
-Click any device → the **Config Panel** opens where you can set:
+### 🖱️ `Topology Designer`
 
-- **Device name**
-- **IP address** & **Subnet mask** per interface
-- **Default gateway** (for PCs/servers)
-- **Interface up/down** toggle
+Drag-and-drop canvas for PCs, switches, and routers.
 
-### CLI (Command Line)
+</td>
+<td width="50%" valign="top">
 
-Expand the bottom **CLI panel**, select a device, then type commands:
+### 💻 `Built-in CLI`
 
-| Command                       | Example                                   |
-| ----------------------------- | ----------------------------------------- |
-| `ip addr <iface> <ip> <mask>` | `ip addr eth0 192.168.1.10 255.255.255.0` |
-| `ping <ip>`                   | `ping 192.168.1.1`                        |
-| `show interfaces`             | Shows all interface details               |
-| `hostname <name>`             | Renames the device                        |
+Real command-line configuration per device.
 
-### Ping Simulation
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
 
-Type `ping <ip>` in the CLI. The simulator checks:
+### 📡 `Packet Simulation`
 
-- Source has a valid IP on an active interface
-- Target device exists with that IP
-- Both are on the same subnet **or** gateways are configured
-- A physical path exists between them (BFS across connections)
+Test connectivity and observe packet delivery live.
 
-Animated dots travel along cables showing success (green) or failure (red).
+</td>
+<td width="50%" valign="top">
 
-### Save / Load / Export
+### 💾 `Save & Load`
 
-- **Auto-save**: topology saves to localStorage on every change
-- **Undo/Redo**: `Ctrl+Z` / `Ctrl+Shift+Z`
-- **Export**: downloads topology as `.json`
-- **Import**: loads a `.json` file
-- **Reset**: clears the canvas
-- **Example topologies**: load prebuilt networks from the sidebar
+Export and import topologies as JSON.
 
-### Canvas Controls
+</td>
+</tr>
+</table>
 
-- **Scroll** → zoom in/out
-- **Alt + Drag** → pan the canvas
-- **Click device** → select
-- **Drag device** → reposition
+<br/>
 
-## Architecture
+<div align="center">
+<img src="./src/assets/image-2.png" alt="PacketNest — CLI and packet simulation view" width="90%" />
+<br/>
+<sub><b>Fig. 2</b> — CLI configuration & live packet simulation</sub>
+</div>
 
-| File                 | Purpose                                                    |
-| -------------------- | ---------------------------------------------------------- |
-| `NetworkContext.tsx` | Global state (devices, connections, history, localStorage) |
-| `simulation.ts`      | Ping logic with BFS path finding                           |
-| `networkUtils.ts`    | IP/subnet math helpers                                     |
-| `NetworkCanvas.tsx`  | SVG workspace with pan/zoom                                |
-| `CLIPanel.tsx`       | Terminal emulator & command parser                         |
-| `ConfigPanel.tsx`    | Device property editor                                     |
-| `DevicePalette.tsx`  | Drag-and-drop sidebar                                      |
+---
 
-## Roadmap
+## ▍ Objectives
 
-- [ ] Export as DOCX
-- [ ] VLAN support
+|  #   | Objective                                            |
+| :--: | ---------------------------------------------------- |
+| `01` | Graphical simulation environment for educational use |
+| `02` | Drag-and-drop topology design and device management  |
+| `03` | Simulate PC, switch, and router communication        |
+| `04` | Built-in CLI for real command-based configuration    |
+| `05` | Save, load, and manage topologies efficiently        |
+
+---
+
+## ▍ Tech Stack
+
+| Layer                | Technology     |
+| -------------------- | -------------- |
+| 🔵 UI Framework      | `React.js`     |
+| 🔷 Styling           | `Tailwind CSS` |
+| 🟡 Simulation Logic  | `Python`       |
+| 🟢 Runtime / Tooling | `Node.js`      |
+| 🟣 Persistence       | `JSON Storage` |
+
+---
+
+## ▍ Getting Started
+
+```bash
+# clone
+git clone https://github.com/<your-org>/PacketNest.git
+cd PacketNest
+
+# install
+npm install
+
+# run
+npm run dev
+```
+
+> App runs at `localhost:5173` by default.
+
+---
+
+## ▍ Group Members
+
+<table>
+<tr><th>Name</th><th>Roll No</th><th>Role</th></tr>
+<tr><td>Komail Khawaja</td><td><code>24108180</code></td><td>🔵 Network</td></tr>
+<tr><td>Ali Zaviyar Sheikh</td><td><code>24108156</code></td><td>🟣 CLI-Device</td></tr>
+<tr><td>Ibrahim</td><td><code>24108184</code></td><td>🟢 Simulation</td></tr>
+<tr><td>Abdul Basit</td><td><code>24108150</code></td><td>🟡 Integration</td></tr>
+</table>
+
+---
+
+## ▍ Course Info
+
+|                |                                    |
+| -------------- | ---------------------------------- |
+| **Course**     | Computer Networks Lab              |
+| **Instructor** | Ahsan Abbas                        |
+| **Program**    | BS(AI) · 4B · SZABIST ISB          |
+| **Department** | Robotics & Artificial Intelligence |
+
+---
+
+## ▍ Links
+
+`→` [**Return to Simulator**](https://packetnest.vercel.app/)
+`→` [**packetnest.vercel.app**](https://packetnest.vercel.app/)
+
+<br/>
+
+<div align="center">
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<sub><i>Department of Robotics & Artificial Intelligence</i></sub>
+<br/>
+<sub><i>SZABIST University, Islamabad</i></sub>
+
+</div>
