@@ -140,14 +140,6 @@ npm run dev
 
 ## ▍ Group Members
 
-<table>
-<tr><th>Name</th><th>Roll No</th><th>Role</th></tr>
-<tr><td>Komail Khawaja</td><td><code>24108180</code></td><td>🔵 Network</td></tr>
-<tr><td>Ali Zaviyar Sheikh</td><td><code>24108156</code></td><td>🟣 CLI-Device</td></tr>
-<tr><td>Ibrahim</td><td><code>24108184</code></td><td>🟢 Simulation</td></tr>
-<tr><td>Abdul Basit</td><td><code>24108150</code></td><td>🟡 Integration</td></tr>
-</table>
-
 ---
 
 ## ▍ Course Info
@@ -155,7 +147,7 @@ npm run dev
 |                |                                    |
 | -------------- | ---------------------------------- |
 | **Course**     | Computer Networks Lab              |
-| **Instructor** | Ahsan Abbas                        |
+| **Developer**  | Abdul Basit                        |
 | **Program**    | BS(AI) · 4B · SZABIST ISB          |
 | **Department** | Robotics & Artificial Intelligence |
 
