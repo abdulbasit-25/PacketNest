@@ -1,0 +1,56 @@
+PacketNest Usage Guide
+
+1) Overview
+- PacketNest is an interactive Cisco packet simulation canvas.
+- Left panel: Device palette; middle: network canvas; right panel: config/detail panel; bottom: CLI.
+
+2) Build topologies
+- Drag any device from left palette onto canvas.
+- Devices include: Router, Wireless Router, Switch, Firewall, PC, Laptop, Smartphone, Server.
+- Use categories: Endpoints (PC, Laptop, Smartphone, Server), Infrastructure (Router, Wireless Router, Switch, Firewall).
+
+3) Move and select devices
+- Click a device to select and open config panel.
+- Drag device to reposition (left mouse), Alt+drag to pan.
+
+4) Connect devices
+- Select a device and click the connect icon (cable) on top toolbar next to selected device.
+- Click another device to create a connection using first available interface.
+- Connection count and path validated automatically.
+
+5) Configuring device details
+- In config panel, edit Name, Default Gateway, interface IP and subnet mask.
+- For Firewall: set ACL rules (e.g. "permit any", "deny 10.0.0.0/8").
+- For Wireless Router: has ethernet and wlan interfaces.
+- For Smartphone: uses wlan0 wireless interface.
+
+6) Interface flags
+- Toggle UP/DOWN state per interface in config panel.
+- Set interface IP/mask to simulate real network connectivity.
+
+7) Example topologies
+- Pick "Examples" in left panel and select one: Simple LAN, Routed Network, Firewall DMZ, or Full Stack All Devices.
+- Full Stack uses all device types and fully connected path.
+
+8) Validate simulation
+- Use CLI panel (bottom) to simulate pinging.
+- Typical workflow: set source interface up, configure gateway, connect path+interfaces, run ping between devices.
+- Firewall ACL and routing determine reachability.
+
+9) Add routing/ARP data
+- Config panel shows ARP and routing table summary for each node.
+- This is read-only in UI; update tables in code or extend components for manual edit.
+
+10) Save / load / reset
+- Export state to JSON via Export button in left palette.
+- Import saved topology from JSON using Import button.
+- Reset clears canvas.
+
+11) Automation support
+- Use node property `type` and `defaultGateway` in code for simulation paths.
+- `simulatePing` checks same subnet, gateway, physical path, and ACL.
+
+12) Tips
+- Keep topologies small at first: one router + one switch + 2 endpoints.
+- Add wireless router for wireless endpoint testing.
+- Group devices by function to avoid clutter and improve structure.

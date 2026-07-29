@@ -59,6 +59,38 @@ export function simulatePing(
     return { success: false, message: `Destination host ${destIp} unreachable.`, steps };
   }
 
+  const isAllowedByAcl = (device: NetworkDevice, ip: string): boolean => {
+    const raw = (device.acl || '').trim();
+    if (!raw) return true;
+    const lines = raw.split('\n').map(l => l.trim().toLowerCase()).filter(Boolean);
+    for (const line of lines) {
+      if (line === 'permit any') return true;
+      if (line === 'deny any') return false;
+      const [action, cidr] = line.split(' ');
+      if (!(action === 'permit' || action === 'deny') || !cidr) continue;
+      if (cidr === 'any') {
+        return action === 'permit';
+      }
+      const [net, prefix] = cidr.split('/');
+      if (!net || !prefix) continue;
+      const mask = prefix === '32' ? '255.255.255.255' : '';
+      if (net === ip || cidr === `${ip}/32`) {
+        return action === 'permit';
+      }
+    }
+    return true;
+  };
+
+  if (!isAllowedByAcl(source, destIp)) {
+    steps.push(`Traffic blocked by ${source.name} ACL.`);
+    return { success: false, message: 'Traffic blocked by ACL.', steps };
+  }
+
+  if (!isAllowedByAcl(destDevice, destIp)) {
+    steps.push(`Traffic blocked at destination ACL (${destDevice.name}).`);
+    return { success: false, message: 'Traffic blocked by destination ACL.', steps };
+  }
+
   // Check same subnet
   const srcNet = getNetworkAddress(sourceIf.ipAddress, sourceIf.subnetMask);
   const destIf = destDevice.interfaces.find(i => i.ipAddress === destIp)!;

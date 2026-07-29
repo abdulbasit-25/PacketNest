@@ -16,7 +16,7 @@ export function CLIPanel() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [lines, setLines] = useState<CLILine[]>([
-    { type: 'output', text: 'PacketNest CLI v1.0 — Type "help" for commands.' },
+    { type: 'output', text: 'PacketNest CLI v1.1 — Type "help" for commands.' },
   ]);
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<string[]>([]);

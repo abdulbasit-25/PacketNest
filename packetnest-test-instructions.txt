@@ -1,0 +1,164 @@
+PacketNest Network Testing Instructions
+
+Purpose:
+Provide a concise, repeatable test plan to validate connectivity, routing, redundancy, and security behavior for PacketNest example topologies and newly created examples.
+
+Scope:
+- Manual verification steps for interactive testing.
+- Test templates for any new example added to the `Examples` gallery (use the "Per-example test template" below).
+- Acceptance criteria and troubleshooting hints.
+
+General conventions:
+- Use the general ping command format: `ping <destination IP>`.
+- When describing examples, use the example name exactly (e.g., `vlanOffice`).
+- Document any manual configuration changes (IP/gateway/ACL) in the test notes.
+
+Environment prerequisites:
+1. Load the desired example from the Examples menu.
+2. Verify all devices are powered and interfaces show UP.
+3. Confirm device IP addresses, subnet masks, and gateways match the example specification.
+4. If a firewall or ACL is present, record the rule set before changing it.
+
+How to run a test (quick checklist):
+1. Load example and inspect topology.
+2. Verify IP/gateway on each host.
+3. Ensure routers/firewalls have interfaces UP and routes present.
+4. Execute the listed test commands from the specified source device(s).
+5. Record outcomes and any packet/log traces if available.
+
+Per-example test template (use for all new examples):
+- Example name: `exampleName`
+- Purpose: short description of what the example demonstrates.
+- Devices: list with IP, mask, gateway.
+- Topology: short topology summary.
+- Setup: steps to configure or confirm before testing.
+- Tests: numbered commands and expected results.
+- Acceptance: pass/fail criteria and expected artifacts (logs, route entries).
+
+---
+
+## SCENARIO 1: VLAN Office Network
+
+Devices:
+- PC1: 192.168.10.10 / 255.255.255.0 / GW 192.168.10.1
+- PC2: 192.168.20.10 / 255.255.255.0 / GW 192.168.20.1
+- Router VLAN10: 192.168.10.1 / 255.255.255.0
+- Router VLAN20: 192.168.20.1 / 255.255.255.0
+
+Purpose:
+Simulate two VLANs with inter-VLAN routing on a router.
+
+Setup:
+1. Load `vlanOffice` example.
+2. Confirm PC1/PC2 addresses and gateways.
+3. Ensure router VLAN interfaces are UP and routing is enabled.
+
+Tests:
+1. From PC1: `ping 192.168.10.1` — expected: success (local gateway reachable).
+2. From PC1: `ping 192.168.10.10` — expected: success (same-VLAN host).
+3. From PC1: `ping 192.168.20.10` — expected: success if inter-VLAN routing enabled; otherwise blocked.
+
+Acceptance:
+All three tests should succeed when routing is configured; failure indicates missing route or incorrect gateway.
+
+---
+
+## SCENARIO 2: Redundant Dual-Router Network
+
+Devices:
+- Router1: 192.168.1.1 / 255.255.255.0
+- Router2: 192.168.1.2 / 255.255.255.0
+- PC: 192.168.1.10 / 255.255.255.0 / GW 192.168.1.1
+
+Purpose:
+Validate primary/backup gateway behavior and connectivity failover.
+
+Setup:
+1. Load `redundantDualRouter` example.
+2. Confirm both routers and PC interfaces are UP.
+3. Set PC default gateway to Router1 (192.168.1.1).
+
+Tests:
+1. From PC: `ping 192.168.1.1` — expected: success.
+2. From PC: `ping 192.168.1.2` — expected: success (both routers reachable on LAN).
+3. Simulate primary down by disabling Router1 interface or disconnecting it; then from PC: `ping 192.168.1.2` — expected: success (backup reachable). Optionally change PC GW to Router2 and re-test outbound.
+
+Acceptance:
+Backup router responds when primary is down; no persistent routing loops or blackholes.
+
+---
+
+## SCENARIO 3: Guest WiFi Isolation Network
+
+Devices:
+- Wireless Router (internal): 192.168.0.1 / 255.255.255.0
+- Wireless Router (guest): 192.168.50.1 / 255.255.255.0
+- Internal PC: 192.168.0.10 / 255.255.255.0 / GW 192.168.0.1
+- Server: 192.168.0.100 / 255.255.255.0 / GW 192.168.0.1
+- Guest Phone: 192.168.50.10 / 255.255.255.0 / GW 192.168.50.1
+
+Purpose:
+Ensure guest segment isolation from internal LAN while allowing guest internet access.
+
+Setup:
+1. Load `guestWifiIsolation` example.
+2. Confirm subnets and gateways for internal and guest interfaces.
+3. Apply ACLs/firewall rules that enforce guest isolation (if not present).
+
+Tests:
+1. From Guest Phone: `ping 192.168.50.1` — expected: success (guest gateway reachable).
+2. From Guest Phone: `ping 192.168.0.100` — expected: blocked if isolation is enforced.
+3. From Internal PC: `ping 192.168.0.100` — expected: success.
+
+Acceptance:
+Guest cannot reach protected internal hosts when ACLs are active; guest gateway and internet access remain available.
+
+---
+
+## SCENARIO 4: Server Farm with Firewall
+
+Devices:
+- Firewall (inside): 192.168.1.1 / 255.255.255.0
+- Firewall (outside): 10.0.0.1 / 255.255.255.0
+- Client PC: 192.168.1.10 / 255.255.255.0 / GW 192.168.1.1
+- Server1: 10.0.0.10 / 255.255.255.0 / GW 10.0.0.1
+- Server2: 10.0.0.11 / 255.255.255.0 / GW 10.0.0.1
+
+Purpose:
+Validate firewall mediation of client-to-server traffic with selective allow/deny rules.
+
+Setup:
+1. Load `serverFarm` example.
+2. Record existing ACLs and configure test ACLs (e.g., permit ICMP from client to servers for test).
+
+Tests:
+1. From Client: `ping 192.168.1.1` — expected: success (firewall inside reachable).
+2. From Client: `ping 10.0.0.10` — expected: success only if ACL permits ICMP.
+3. Modify ACL to deny a service/protocol and confirm packets are blocked.
+
+Acceptance:
+Firewall enforces ACLs consistently; allowed flows succeed and denied flows fail with no unexpected passthrough.
+
+---
+
+## Additional examples and custom tests
+- For any new example, follow the Per-example test template above.
+- Add variant tests for: performance (packet rate), failure scenarios (link/interface down), and configuration drift (wrong gateway/mask).
+
+Logging and evidence collection:
+- Capture ping output and any packet-trace logs provided by PacketNest.
+- Note route tables and interface states when a test fails.
+- Save screenshots or export simulation logs for later analysis.
+
+Troubleshooting tips:
+- If pings to a gateway fail, verify interface state and local IP configuration.
+- If inter-network pings fail, check routing tables on routers and firewall ACLs.
+- For redundancy tests, ensure timers/state transitions are allowed time (some simulated failover may have a delay).
+
+Acceptance criteria (overall):
+1. All core example tests (connectivity, routing, ACL enforcement, redundancy) pass per their Acceptance sections.
+2. Failures are reproducible and documented with configuration, steps to reproduce, and logs.
+
+Change log:
+- 2026-05-19: Consolidated per-example tests into a single template and added run/troubleshoot guidance.
+

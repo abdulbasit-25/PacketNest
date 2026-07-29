@@ -89,7 +89,7 @@ function DeviceConfigPanel({ device }: { device: NetworkDevice }) {
         </div>
 
         {/* Default gateway */}
-        {(device.type === 'pc' || device.type === 'server') && (
+        {(device.type === 'pc' || device.type === 'server' || device.type === 'laptop' || device.type === 'smartphone' || device.type === 'wireless-router') && (
           <div>
             <label className="text-xs text-muted-foreground uppercase tracking-wide">Default Gateway</label>
             <input
@@ -99,6 +99,21 @@ function DeviceConfigPanel({ device }: { device: NetworkDevice }) {
               placeholder="e.g. 192.168.1.1"
               className={`mt-1 w-full bg-secondary border rounded px-2 py-1.5 text-sm font-mono text-foreground focus:outline-none focus:ring-1 focus:ring-primary ${editDevice.defaultGateway && !isValidIp(editDevice.defaultGateway) ? 'border-destructive' : 'border-border'}`}
             />
+          </div>
+        )}
+
+        {/* Firewall ACL / Security Rules */}
+        {device.type === 'firewall' && (
+          <div>
+            <label className="text-xs text-muted-foreground uppercase tracking-wide">Security Rules (ACL)</label>
+            <textarea
+              value={editDevice.acl || ''}
+              onChange={(e) => setEditDevice(prev => ({ ...prev, acl: e.target.value }))}
+              placeholder="e.g. permit any\ndeny 10.0.0.0/8"
+              className="mt-1 w-full bg-secondary border border-border rounded px-2 py-1.5 text-sm font-mono text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              rows={3}
+            />
+            <p className="text-[10px] text-muted-foreground mt-1">Firewall can override routing for blocked addresses.</p>
           </div>
         )}
 
@@ -140,6 +155,25 @@ function DeviceConfigPanel({ device }: { device: NetworkDevice }) {
                   </div>
                 )}
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ARP / Routing summary */}
+        <div>
+          <label className="text-xs text-muted-foreground uppercase tracking-wide">ARP Table (simulated)</label>
+          <div className="mt-1 p-2 rounded bg-muted/50 border border-border text-[11px] font-mono text-foreground">
+            {editDevice.arpTable.length === 0 ? 'No entries' : editDevice.arpTable.map((entry, i) => (
+              <div key={i}>{entry.ip} → {entry.mac} ({entry.interfaceId})</div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="text-xs text-muted-foreground uppercase tracking-wide">Routing Table</label>
+          <div className="mt-1 p-2 rounded bg-muted/50 border border-border text-[11px] font-mono text-foreground">
+            {editDevice.routingTable.length === 0 ? 'No routes' : editDevice.routingTable.map((route, i) => (
+              <div key={i}>{route.destination}/{route.mask} via {route.nextHop} ({route.interfaceId})</div>
             ))}
           </div>
         </div>

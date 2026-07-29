@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { NetworkProvider } from '@/context/NetworkContext';
 import { DevicePalette } from '@/components/network/DevicePalette';
 import { NetworkCanvas } from '@/components/network/NetworkCanvas';
@@ -14,10 +15,18 @@ const Index = () => {
           <div className="flex items-center gap-2">
             <Wifi size={18} className="text-primary" />
             <h1 className="text-sm font-semibold text-foreground tracking-wide">PacketNest</h1>
-            <span className="text-[10px] text-muted-foreground bg-secondary px-1.5 py-0.5 rounded">v1.0</span>
+            <span className="text-[10px] text-muted-foreground bg-secondary px-1.5 py-0.5 rounded">v1.1</span>
           </div>
-          <div className="ml-auto text-[10px] text-muted-foreground font-mono">
-            Drag devices • Click to select • Alt+Drag to pan • Scroll to zoom
+          <div className="ml-auto flex items-center gap-4">
+            <Link
+              to="/about"
+              className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
+            >
+              About
+            </Link>
+            <div className="text-[10px] text-muted-foreground font-mono">
+              Drag devices • Click to select • Alt+Drag to pan • Scroll to zoom
+            </div>
           </div>
         </header>
 

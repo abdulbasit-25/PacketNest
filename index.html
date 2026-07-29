@@ -1,44 +1,132 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Charset & Viewport -->
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
 
-    <!-- Primary Meta Tags -->
-    <title>PacketNest - Network Packet Analyzer</title>
-    <meta name="description" content="PacketNest is a powerful network packet analysis tool that helps you monitor and inspect network traffic easily." />
+    <!-- Primary SEO -->
+    <title>
+      PacketNest — Interactive Network Simulator
+    </title>
+
+    <meta
+      name="title"
+      content="PacketNest — Interactive Network Simulator"
+    />
+
+    <meta
+      name="description"
+      content="PacketNest is a browser-based interactive network simulator inspired by Cisco Packet Tracer. Build topologies, configure routers and switches, run CLI commands, and simulate packet flow directly in your browser."
+    />
+
+    <meta
+      name="keywords"
+      content="PacketNest, network simulator, packet tracer, networking lab, Cisco simulator, router simulation, switch simulation, subnetting, ping simulation, networking education, React network simulator"
+    />
+
     <meta name="author" content="PacketNest" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Theme -->
+    <meta name="theme-color" content="#0B1020" />
+    <meta name="color-scheme" content="dark light" />
+
+    <!-- Canonical -->
+    <link
+      rel="canonical"
+      href="https://packetnest.vercel.app/"
+    />
 
     <!-- Favicon -->
-    <!-- Favicon -->
-<link rel="icon" href="/favicon.ico" />
-<link rel="icon" type="image/png" href="/favicon.png" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <!-- Open Graph / Facebook -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/image.png" />
+    <link rel="apple-touch-icon" href="/image.png" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="PacketNest - Network Packet Analyzer" />
-    <meta property="og:description" content="Monitor, inspect, and analyze network packets effortlessly with PacketNest." />
-    <meta property="og:image" content="https://PacketNest.dev/opengraph-image-p98pqg.png" />
-    <meta property="og:url" content="https://packetnest.vercel.app/" />
+    <meta property="og:site_name" content="PacketNest" />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@PacketNest" />
-    <meta name="twitter:title" content="PacketNest - Network Packet Analyzer" />
-    <meta name="twitter:description" content="Monitor, inspect, and analyze network packets effortlessly with PacketNest." />
-    <meta name="twitter:image" content="https://PacketNest.dev/opengraph-image-p98pqg.png" />
+    <meta
+      property="og:title"
+      content="PacketNest — Interactive Network Simulator"
+    />
 
-    <!-- Optional: theme color for mobile browsers -->
-    <meta name="theme-color" content="#4F46E5" />
+    <meta
+      property="og:description"
+      content="Build virtual network topologies, configure devices, and simulate packet flow in a modern browser-based networking lab."
+    />
 
-    <!-- Optional: preload fonts or important assets -->
-    <!-- Example: <link rel="preload" href="/fonts/YourFont.woff2" as="font" type="font/woff2" crossorigin> -->
+    <meta
+      property="og:url"
+      content="https://packetnest.vercel.app/"
+    />
+
+    <meta
+      property="og:image"
+      content="https://packetnest.vercel.app/og-image.jpg"
+    />
+
+    <meta
+      property="og:image:alt"
+      content="PacketNest Interactive Network Simulator"
+    />
+
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter / X -->
+    <meta
+      name="twitter:card"
+      content="summary_large_image"
+    />
+
+    <meta
+      name="twitter:title"
+      content="PacketNest — Interactive Network Simulator"
+    />
+
+    <meta
+      name="twitter:description"
+      content="Modern browser-based network simulator with routers, switches, CLI commands, topology design, and packet animation."
+    />
+
+    <meta
+      name="twitter:image"
+      content="https://packetnest.vercel.app/og-image.jpg"
+    />
+
+    <!-- PWA / Mobile -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+
+    <meta
+      name="apple-mobile-web-app-title"
+      content="PacketNest"
+    />
+
+    <!-- Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
+    <!-- Manifest (optional future PWA support) -->
+    <!-- <link rel="manifest" href="/manifest.webmanifest" /> -->
 
   </head>
 
   <body>
     <noscript>
-      <strong>We're sorry but PacketNest doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong>
+        PacketNest requires JavaScript to run properly.
+      </strong>
     </noscript>
 
     <div id="root"></div>

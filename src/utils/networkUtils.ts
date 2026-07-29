@@ -1,24 +1,72 @@
 import { v4 as uuidv4 } from 'uuid';
 import { NetworkDevice, DeviceType, NetworkInterface } from '@/types/network';
 
+export const deviceTemplates: Record<DeviceType, Partial<NetworkDevice>> = {
+  router: { name: 'Router', defaultGateway: '', acl: '', arpTable: [], routingTable: [] },
+  'wireless-router': { name: 'Wireless Router', defaultGateway: '', acl: '', arpTable: [], routingTable: [] },
+  switch: { name: 'Switch', defaultGateway: '', arpTable: [], routingTable: [] },
+  pc: { name: 'PC', defaultGateway: '', arpTable: [], routingTable: [] },
+  server: { name: 'Server', defaultGateway: '', arpTable: [], routingTable: [] },
+  laptop: { name: 'Laptop', defaultGateway: '', arpTable: [], routingTable: [] },
+  smartphone: { name: 'Smartphone', defaultGateway: '', arpTable: [], routingTable: [] },
+  firewall: { name: 'Firewall', defaultGateway: '', acl: '', arpTable: [], routingTable: [] },
+};
+
 export function createDefaultInterfaces(type: DeviceType): NetworkInterface[] {
-  const count = type === 'router' ? 4 : type === 'switch' ? 8 : 1;
-  const prefix = type === 'router' ? 'GigabitEthernet0/' : type === 'switch' ? 'FastEthernet0/' : 'eth';
-  return Array.from({ length: count }, (_, i) => ({
-    id: uuidv4(),
-    name: `${prefix}${i}`,
-    ipAddress: '',
-    subnetMask: '',
-    isUp: false,
-  }));
+  if (type === 'firewall') {
+    return [
+      { id: uuidv4(), name: 'inside', ipAddress: '', subnetMask: '', isUp: false, type: 'inside' },
+      { id: uuidv4(), name: 'outside', ipAddress: '', subnetMask: '', isUp: false, type: 'outside' },
+    ];
+  }
+
+  if (type === 'router') {
+    return Array.from({ length: 4 }, (_, i) => ({
+      id: uuidv4(),
+      name: `GigabitEthernet0/${i}`,
+      ipAddress: '',
+      subnetMask: '',
+      isUp: false,
+      type: 'ethernet',
+    }));
+  }
+
+  if (type === 'switch') {
+    return Array.from({ length: 8 }, (_, i) => ({
+      id: uuidv4(),
+      name: `FastEthernet0/${i}`,
+      ipAddress: '',
+      subnetMask: '',
+      isUp: false,
+      type: 'ethernet',
+    }));
+  }
+
+  if (type === 'wireless-router') {
+    return [
+      { id: uuidv4(), name: 'eth0', ipAddress: '', subnetMask: '', isUp: false, type: 'ethernet' },
+      { id: uuidv4(), name: 'wlan0', ipAddress: '', subnetMask: '', isUp: false, type: 'wireless' },
+    ];
+  }
+
+  if (type === 'smartphone') {
+    return [{ id: uuidv4(), name: 'wlan0', ipAddress: '', subnetMask: '', isUp: false, type: 'wireless' }];
+  }
+
+  // pc, server, laptop (ethernet)
+  return [{ id: uuidv4(), name: 'eth0', ipAddress: '', subnetMask: '', isUp: false, type: 'ethernet' }];
 }
 
 export function createDevice(type: DeviceType, x: number, y: number, name?: string): NetworkDevice {
   const names: Record<DeviceType, string> = {
     router: 'Router',
+    'wireless-router': 'Wireless Router',
     switch: 'Switch',
     pc: 'PC',
     server: 'Server',
+    laptop: 'Laptop',
+    smartphone: 'Smartphone',
+    firewall: 'Firewall',
   };
   return {
     id: uuidv4(),
@@ -28,8 +76,12 @@ export function createDevice(type: DeviceType, x: number, y: number, name?: stri
     y,
     interfaces: createDefaultInterfaces(type),
     defaultGateway: '',
+    acl: type === 'firewall' ? 'permit any' : '',
+    arpTable: [],
+    routingTable: [],
   };
 }
+
 
 export function ipToNumber(ip: string): number {
   const parts = ip.split('.').map(Number);
